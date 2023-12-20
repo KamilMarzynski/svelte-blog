@@ -1,6 +1,7 @@
-<nav>
-    <a href="/">Home</a>
-    <a href="/posts">Posts</a>
-</nav>
+<script>
+	import Navigation from "$lib/components/Navigation.svelte";
+</script>
+
+<Navigation />
 
 <slot />

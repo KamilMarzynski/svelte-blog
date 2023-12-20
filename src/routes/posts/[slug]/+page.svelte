@@ -1,17 +1,29 @@
 <script lang="ts">
+    import { page } from '$app/stores';
+	import Post from "$lib/components/Post.svelte";
+
     export let data: {
         post: {
             title: string;
             content: string;
+            slug: string;
         };
-        // summaries is available because of +layout.server.ts which is in parent directory
-        // load function of this file does not return summaries
-        summaries: {
+        // recents is available because of +layout.server.ts which is in parent directory
+        // load function of this file does not return recents
+        recents: {
             slug: string;
             title: string;
         }[];
     }
 </script>
 
-<h1>{data.post.title}</h1>
-<div>{@html data.post.content}</div>
+<Post title={data.post.title} content={data.post.content} />
+
+<a href='{$page.url}/edit'>Edit</a>
+
+<style>
+    a {
+        display: block;
+        margin-top: 1rem;
+    }
+</style>

@@ -13,15 +13,26 @@ let posts: PostEntity[] = [
 ];
 
 export const db = {
-    savePost: (post: Omit<PostEntity, 'id'>) => {
+    savePost: (post: Omit<PostEntity, 'slug'>) => {
         console.log('Saving post to database', post);
         const lowerCasedTitle = post.title.toLowerCase().replace(/\s/g, '-');
         const slug = lowerCasedTitle + '-' + Date.now();
-        posts = [ ...posts, { ...post, slug }];
+        
+        const newPost = { ...post, slug };
+        posts = [ ...posts, newPost];
+        return newPost;
     },
 
-    getPosts: () => {
+    updatePost: (slug: string, post: Partial<Omit<PostEntity, 'slug'>>) => {
+        console.log('Updating post in database', slug, post);
+        posts = posts.map(p => p.slug === slug ? { ...p, ...post } : p);
+    },
+
+    getPosts: (limit: number = 0) => {
         console.log('Getting posts from database');
+        if(limit > 0) {
+            return posts.slice(0, limit);
+        }
         return posts;
     },
 

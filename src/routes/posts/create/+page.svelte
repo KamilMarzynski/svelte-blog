@@ -1,1 +1,7 @@
-<h1>Admin route for creating a new post</h1>
+<script>
+	import PostEditable from "$lib/components/PostEditable.svelte";
+
+</script>
+<h1>Create a new post</h1>
+
+<PostEditable />

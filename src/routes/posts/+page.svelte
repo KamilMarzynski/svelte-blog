@@ -1,4 +1,6 @@
 <script lang='ts'>
+	import PostsList from "$lib/components/PostsList.svelte";
+
     export let data: {
         summaries: {
             slug: string;
@@ -9,10 +11,10 @@
 
 <h1>Page with list of posts, pagination etc</h1>
 
-<ul>
-    {#each data.summaries as { slug, title }}
-        <li>
-            <a href="/posts/{slug}">{title}</a>
-        </li>
-    {/each}
-</ul>
+<PostsList posts={data.summaries} />
+
+<style>
+    h1 {
+        margin-bottom: 1rem;
+    }
+</style>
