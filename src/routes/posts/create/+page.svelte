@@ -1,0 +1,1 @@
+<h1>Admin route for creating a new post</h1>
