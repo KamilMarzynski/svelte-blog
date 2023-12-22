@@ -5,9 +5,9 @@
         post: {
             title: string;
             content: string;
-            slug: string;
+            id: string;
         };
     }
 </script>
 
-<PostEditable title={data.post.title} content={data.post.content} slug={data.post.slug} />
+<PostEditable title={data.post.title} content={data.post.content} id={data.post.id} />

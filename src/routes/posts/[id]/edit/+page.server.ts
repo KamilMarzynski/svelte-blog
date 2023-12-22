@@ -1,15 +1,15 @@
+import { posts, type PostId } from '$lib';
 import { error, redirect } from '@sveltejs/kit';
-import { db } from '$lib';
 import Joi from 'joi';
 
 type UpdatePostRequest = {
-    slug: string;
+    id: PostId;
     title?: string;
     content?: string;
 }
 
 const schema = Joi.object<UpdatePostRequest>({
-    slug: Joi.string().required(),
+    id: Joi.string().required(),
     title: Joi.string().optional(),
     content: Joi.string().optional()
 });
@@ -19,16 +19,16 @@ export const actions = {
         const data = await request.formData();
 
         const validationResult = schema.validate({
-            slug: data.get('slug'),
+            id: data.get('id'),
             title: data.get('title'),
             content: data.get('content')
         });
 
         if (validationResult.error) {
-            return error(400, 'Missing slug');
+            return error(400, 'Missing id');
         } else {
-            await db.updatePost(validationResult.value.slug, validationResult.value);
-            throw redirect(302, `/posts/${validationResult.value.slug}`);
+            await posts.update(validationResult.value.id, validationResult.value);
+            throw redirect(302, `/posts/${validationResult.value.id}`);
         }
     }
 }

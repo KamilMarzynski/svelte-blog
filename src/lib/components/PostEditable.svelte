@@ -1,15 +1,15 @@
 <script lang="ts">
     export let title: string = '';
     export let content: string = '';
-    export let slug: string = '';
-    const editing: boolean = slug === '' ? false : true;
+    export let id: string = '';
+    const editing: boolean = id === '' ? false : true;
 
     const action = editing ? '?/update' : '?/create';
 </script>
 
 
 <form method="POST" action={action}>
-    <input type="hidden" name="slug" value={slug} />
+    <input type="hidden" name="id" value={id} />
     <label>Title 
         <textarea name="title" value={title} required/> 
     </label>

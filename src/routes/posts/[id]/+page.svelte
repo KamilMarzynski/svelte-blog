@@ -6,12 +6,12 @@
         post: {
             title: string;
             content: string;
-            slug: string;
+            id: string;
         };
         // recents is available because of +layout.server.ts which is in parent directory
         // load function of this file does not return recents
         recents: {
-            slug: string;
+            id: string;
             title: string;
         }[];
     }

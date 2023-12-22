@@ -1,9 +1,9 @@
 <script lang="ts">
     export let title: string;
-    export let slug: string;
+    export let id: string;
 </script>
 
-<a href={`/posts/${slug}`}>{title}</a>
+<a href={`/posts/${id}`}>{title}</a>
 
 <style>
     a {

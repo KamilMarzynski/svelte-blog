@@ -3,7 +3,7 @@
 
     export let data: {
         recents: {
-            slug: string;
+            id: string;
             title: string;
         }[];
     };

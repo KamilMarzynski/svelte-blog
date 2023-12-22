@@ -2,15 +2,15 @@
     import ListPostItem from './ListPostItem.svelte';
 
     export let posts: {
-        slug: string;
+        id: string;
         title: string;
     }[]
 </script>
 
 <ul>
-    {#each posts as { slug, title }}
+    {#each posts as { id, title }}
         <li>
-            <ListPostItem slug={slug} title={title} />
+            <ListPostItem id={id} title={title} />
         </li>
     {/each}
 </ul>

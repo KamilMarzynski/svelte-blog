@@ -3,7 +3,7 @@
 
     export let data: {
         summaries: {
-            slug: string;
+            id: string;
             title: string;
         }[];
     };
