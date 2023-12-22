@@ -33,6 +33,6 @@
 	"dependencies": {
 		"firebase": "^10.7.1",
 		"joi": "^17.11.0",
-		"uuidv4": "^6.2.13"
+		"uuid": "^9.0.1"
 	}
 }
