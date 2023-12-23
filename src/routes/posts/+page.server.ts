@@ -1,5 +1,3 @@
-// import { db } from '$lib/server/database';
-
 import { posts } from "$lib";
 
 // using +layout.server.ts here allows us to pass data down, so each nested route can access it just like +page.svelte can in this directory
