@@ -3,13 +3,13 @@
     import { auth, db } from "$lib/firebase/firebase";
     import { onMount } from "svelte";
     import { getDoc, doc, setDoc } from "firebase/firestore";
-    import { authStore } from "../lib/store/authStore";
+    import { authStore, type UserData } from "../lib/store/authStore";
 
-
-    const nonAuthRoutes = ["/", "posts", "posts/[id]"];
+    const nonAuthRoutes = ["/", "posts", "posts/[id]", "/auth"];
 
     onMount(() => {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
+            console.log("auth state changed", user);
             const currentPath = window.location.pathname;
             if (!user && !nonAuthRoutes.includes(currentPath)) {
                 window.location.href = "/";
@@ -17,15 +17,27 @@
             }
 
             if (user && currentPath === "/auth") {
-                window.location.href = "/posts";
+                window.location.href = "/";
                 return;
             }
+
+            let dataToSetToStore: UserData = {
+                role: "anonymous",
+                email: '',
+            };
 
             if (!user) {
+                authStore.update((curr: any) => {
+                    return {
+                        ...curr,
+                        ...dataToSetToStore,
+                    };
+                });
+
                 return;
             }
 
-            let dataToSetToStore: any;
+ 
             const docRef = doc(db, "users", user.uid);
             const docSnap = await getDoc(docRef);
             if (!docSnap.exists()) {
@@ -37,15 +49,17 @@
                 await setDoc(userRef, dataToSetToStore, { merge: true });
             } else {
                 const userData = docSnap.data();
-                dataToSetToStore = userData;
+                dataToSetToStore = {
+                    email: userData.email,
+                    role: userData.role,
+                };
             }
+
 
             authStore.update((curr: any) => {
                 return {
                     ...curr,
-                    user,
-                    data: dataToSetToStore,
-                    loading: false,
+                    ...dataToSetToStore,
                 };
             });
         });

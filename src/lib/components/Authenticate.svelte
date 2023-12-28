@@ -1,4 +1,5 @@
-<script>
+<script lang>
+	import { authStore } from "$lib/store/authStore";
     import { authHandlers } from "../auth/auth";
 
     let email = "";
@@ -7,6 +8,16 @@
     let error = false;
     let register = false;
     let authenticating = false;
+
+    let user;
+
+    authStore.subscribe((curr) => {
+        user = curr;
+
+        if (user?.role !== "anonymous") {
+            authHandlers.logout();
+        }
+    });
 
     async function handleAuthenticate() {
         if (authenticating) {

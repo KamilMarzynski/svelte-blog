@@ -1,22 +1,22 @@
 <script lang='ts'>
     export let roles: string[] = [];
-	import { authStore } from "$lib/store/authStore";
-	import { onMount } from "svelte";
+	import { authStore, type UserData } from "$lib/store/authStore";
 
-    let loading = $authStore.loading;
-    let user = $authStore.data as any;
+    let user: UserData;
 
-    onMount(() => {
-        if(user === null || !roles.includes(user.role)) {
-            window.location.href = '/';
-        }
+    authStore.subscribe((curr: UserData) => {
+        user = curr;
     });
 </script>
 
-{#if loading}
+{#if !user}
+    Loading...
     <i class="fa-solid fa-spinner loadingSpinner" />
+{:else}
+    {#if roles.includes(user.role)}
+        <slot />
+    {:else}
+        404
+    {/if}
 {/if}
 
-{#if user && roles.includes(user.role)}
-    <slot />
-{/if}

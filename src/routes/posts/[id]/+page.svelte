@@ -1,8 +1,12 @@
 <script lang="ts">
 	import Post from "$lib/components/Post.svelte";
-	import { authStore } from '$lib/store/authStore';
+	import { authStore, type UserData } from '$lib/store/authStore';
 
-    let user = $authStore.data as any;
+    let user: UserData;
+
+    authStore.subscribe((curr: UserData) => {
+        user = curr;
+    });
 
     export let data: {
         post: {

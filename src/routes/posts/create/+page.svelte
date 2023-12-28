@@ -3,8 +3,9 @@
 	import ProtectedRoute from "$lib/components/ProtectedRoute.svelte";
 
 </script>
-<h1>Create a new post</h1>
 
 <ProtectedRoute roles={['admin']}>
+	<h1>Create a new post</h1>
+
 	<PostEditable />
 </ProtectedRoute>
