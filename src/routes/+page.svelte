@@ -1,4 +1,5 @@
 <script lang='ts'>
+    import Navigation from "$lib/components/Navigation.svelte";
 	import PostsList from "$lib/components/PostsList.svelte";
 
     export let data: {
@@ -10,7 +11,6 @@
 </script>
 
 <h1>Start page with most recent posts</h1>
-
 <PostsList posts={data.recents} />
 
 <style>

@@ -1,4 +1,5 @@
 <script lang>
+	import { goto } from "$app/navigation";
 	import { authStore } from "$lib/store/authStore";
     import { authHandlers } from "../auth/auth";
 
@@ -16,6 +17,7 @@
 
         if (user?.role !== "anonymous") {
             authHandlers.logout();
+            goto("/");
         }
     });
 

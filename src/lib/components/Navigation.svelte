@@ -1,7 +1,6 @@
 <script lang='ts'>
     import { authStore, type UserData  } from "../store/authStore";
-    import { authHandlers } from "../auth/auth";
-	import { slide } from "svelte/transition";
+	import { fade } from "svelte/transition";
 
     let user: UserData;
     let items: { name: string, href: string }[] = [];
@@ -17,19 +16,13 @@
         if (user && user.role === "admin") {
             items.push({ name: "Add new post", href: "/posts/create" });
         }
-
-        if (user && user.role !== "anonymous") {
-            items.push({ name: "Log Out", href: "/auth" });
-        } else {
-            items.push({ name: "Log In", href: "/auth" });
-        }
     });
 </script>
 
 <ul>
     {#if user}
         {#each items as {name, href}}
-        <li transition:slide|global>
+        <li in:fade|global>
             <a href={href}>{name}</a>
         </li>
         {/each}

@@ -4,12 +4,13 @@
     import { onMount } from "svelte";
     import { getDoc, doc, setDoc } from "firebase/firestore";
     import { authStore, type UserData } from "../lib/store/authStore";
+    import { page } from "$app/stores";
+	import { goto } from "$app/navigation";
 
     const nonAuthRoutes = ["/", "posts", "posts/[id]", "/auth"];
 
     onMount(() => {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
-            console.log("auth state changed", user);
             const currentPath = window.location.pathname;
             if (!user && !nonAuthRoutes.includes(currentPath)) {
                 window.location.href = "/";
@@ -67,13 +68,18 @@
     });
 </script>
 
-<h1> My blog </h1>
-<Navigation />
-
+<h1> My blog </h1> <button on:click={() => goto('/auth')}> {#if !$authStore || $authStore.role === 'anonymous' } Log In {:else} Log Out {/if} </button>
+{#if $page.url.pathname !== '/auth'}
+    <Navigation />
+{/if}
 <slot />
 
 <style>
     h1 {
+        margin-bottom: 1rem;
+    }
+
+    button {
         margin-bottom: 1rem;
     }
 </style>

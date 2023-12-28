@@ -10,7 +10,6 @@
 </script>
 
 <h1>Page with list of posts, pagination etc</h1>
-
 <PostsList posts={data.summaries} />
 
 <style>
