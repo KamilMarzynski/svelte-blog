@@ -5,7 +5,7 @@
     let user: any;
 
     authStore.subscribe((curr: any) => {
-        user = curr.data;
+        user = curr.data as any;
     });
 </script>
 
@@ -14,7 +14,9 @@
     <a href="/">Home</a>
     <a href="/posts">Posts</a>
     {#if user != null}
-        <a href="/posts/create">Add new post</a>
+        {#if user.role === "admin"}
+            <a href="/posts/create">Add new post</a>
+        {/if}
         <button on:click={authHandlers.logout}>Log Out</button>
     {:else}
         <a href="/auth">Log In</a>

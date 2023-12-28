@@ -1,6 +1,8 @@
 <script lang="ts">
-    import { page } from '$app/stores';
 	import Post from "$lib/components/Post.svelte";
+	import { authStore } from '$lib/store/authStore';
+
+    let user = $authStore.data as any;
 
     export let data: {
         post: {
@@ -19,7 +21,9 @@
 
 <Post title={data.post.title} content={data.post.content} />
 
-<a href='{$page.url}/edit'>Edit</a>
+{#if user && user.role === "admin"}
+    <a href='/posts/{data.post.id}/edit'>Edit</a>
+{/if}
 
 <style>
     a {

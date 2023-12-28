@@ -1,5 +1,6 @@
 <script lang='ts'>
 	import PostEditable from "$lib/components/PostEditable.svelte";
+	import ProtectedRoute from "$lib/components/ProtectedRoute.svelte";
 
     export let data: {
         post: {
@@ -10,4 +11,7 @@
     }
 </script>
 
-<PostEditable title={data.post.title} content={data.post.content} id={data.post.id} />
+
+<ProtectedRoute roles={['admin']}>
+    <PostEditable title={data.post.title} content={data.post.content} id={data.post.id} />
+</ProtectedRoute>
