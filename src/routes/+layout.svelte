@@ -95,7 +95,6 @@
     }
 
     button {
-        margin: 0.5rem 0;
         border-radius: 20px;
         border: none;
         padding: 0.3rem 1.2rem;
@@ -127,6 +126,7 @@
         align-items: center;
         background-color: #fff;
         border-bottom: #999 1px solid;
+        padding: 0 1rem;
     }
 
     .logo-container {

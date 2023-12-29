@@ -35,6 +35,8 @@
         justify-content: left;
         background-color: #fff;
         padding-inline-start: 10px;
+        margin-block-start: 0.5em;
+        margin-block-end: 0.5em;
     }
     ul a {
         text-decoration: none;
@@ -45,7 +47,7 @@
         border-radius: 25px;
         list-style: none;
         margin-right: 2rem;
-        padding: 0.5rem 1rem;
+        padding: 0.3rem 1.2rem;
     }
 
     li:hover {
