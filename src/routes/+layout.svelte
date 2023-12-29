@@ -1,4 +1,5 @@
 <script lang="ts">
+    import logo from "$lib/assets/logo.png";
 	import Navigation from "$lib/components/Navigation.svelte";
     import { auth, db } from "$lib/firebase/firebase";
     import { onMount } from "svelte";
@@ -7,7 +8,7 @@
     import { page } from "$app/stores";
 	import { goto } from "$app/navigation";
 
-    const nonAuthRoutes = ["/", "posts", "posts/[id]", "/auth"];
+    const nonAuthRoutes = ["/", "/posts", "/posts/[id]", "/auth/sign-in"];
 
     onMount(() => {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -17,7 +18,7 @@
                 return;
             }
 
-            if (user && currentPath === "/auth") {
+            if (user && currentPath === "/auth/sign-in") {
                 window.location.href = "/";
                 return;
             }
@@ -68,18 +69,87 @@
     });
 </script>
 
-<h1> My blog </h1> <button on:click={() => goto('/auth')}> {#if !$authStore || $authStore.role === 'anonymous' } Log In {:else} Log Out {/if} </button>
-{#if $page.url.pathname !== '/auth'}
-    <Navigation />
+{#if $page.url.pathname !== '/auth/sign-in'}
+    <div class="header-container">
+        <div class="navigation-container">
+            <Navigation />
+        </div>
+        {#if !$authStore || $authStore.role === 'anonymous' }  
+            <button class="signin-button" on:click={() => goto('/auth/sign-in')}><b>Sign In</b></button>
+        {:else} 
+            <button class="logout-button" on:click={() => goto('/auth/log-out')}><b>Log Out</b></button>
+        {/if}
+    </div>
 {/if}
-<slot />
+
+<div class="logo-container">
+    <img src={logo}  alt="logo"/>
+</div>
+<div class="content-container">
+    <slot />
+</div>
 
 <style>
-    h1 {
-        margin-bottom: 1rem;
+    img {
+        width: max-content;
+        height: 5rem;
+        width: auto;
     }
 
     button {
-        margin-bottom: 1rem;
+        margin: 0.5rem 0;
+        border-radius: 20px;
+        border: none;
+        padding: 0.3rem 1.2rem;
+        font-size: 15px;
+        white-space: nowrap;
     }
+
+    button, .signin-button {
+        color: black;
+        background-color: #fff;
+    }
+
+    button, .signin-button:hover {
+        background-color: #eee;
+    }
+
+    button, .logout-button {
+        color: white;
+        background-color: #f44336;
+    }
+
+    button, .logout-button:hover {
+        background-color: #da190b;
+    }
+
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #fff;
+        border-bottom: #999 1px solid;
+    }
+
+    .logo-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .navigation-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    .content-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+    }
+
 </style>

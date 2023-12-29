@@ -23,7 +23,7 @@
     {#if user}
         {#each items as {name, href}}
         <li in:fade|global>
-            <a href={href}>{name}</a>
+            <a href={href}><b>{name}</b></a>
         </li>
         {/each}
     {/if}
@@ -32,20 +32,24 @@
 <style>
     ul {
         display: flex;
-        justify-content: space-around;
-        padding: 1rem;
-        background-color: #eee;
-        height: 1.5em;
+        justify-content: left;
+        background-color: #fff;
+        width: 100%;
+        margin: 0;
     }
     ul a {
         text-decoration: none;
         color: #333;
     }
-    ul a:hover {
-        text-decoration: underline;
-    }
 
     li {
+        border-radius: 25px;
         list-style: none;
+        margin-right: 5rem;
+        padding: 0.3rem 1.2rem;
+    }
+
+    li:hover {
+        background-color: #eee;
     }
 </style>
