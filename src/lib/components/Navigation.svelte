@@ -34,8 +34,7 @@
         display: flex;
         justify-content: left;
         background-color: #fff;
-        width: 100%;
-        margin: 0;
+        padding-inline-start: 10px;
     }
     ul a {
         text-decoration: none;
@@ -45,8 +44,8 @@
     li {
         border-radius: 25px;
         list-style: none;
-        margin-right: 5rem;
-        padding: 0.3rem 1.2rem;
+        margin-right: 2rem;
+        padding: 0.5rem 1rem;
     }
 
     li:hover {

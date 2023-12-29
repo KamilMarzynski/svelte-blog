@@ -91,9 +91,7 @@
 
 <style>
     img {
-        width: max-content;
         height: 5rem;
-        width: auto;
     }
 
     button {
@@ -102,7 +100,7 @@
         border: none;
         padding: 0.3rem 1.2rem;
         font-size: 15px;
-        white-space: nowrap;
+        width: 6rem;
     }
 
     button, .signin-button {
@@ -141,7 +139,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 100%;
     }
 
     .content-container {
@@ -149,7 +146,6 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        width: 100%;
     }
 
 </style>
