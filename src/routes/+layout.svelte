@@ -8,12 +8,12 @@
     import { page } from "$app/stores";
 	import { goto } from "$app/navigation";
 
-    const nonAuthRoutes = ["/", "/posts", "/posts/[id]", "/auth/sign-in"];
+    const restrictedRoutes = ["/posts/[id]/edit", "/posts/create"];
 
     onMount(() => {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
             const currentPath = window.location.pathname;
-            if (!user && !nonAuthRoutes.includes(currentPath)) {
+            if (!user && restrictedRoutes.includes(currentPath)) {
                 window.location.href = "/";
                 return;
             }
