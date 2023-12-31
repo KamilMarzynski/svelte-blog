@@ -3,6 +3,7 @@ import type { Config } from 'tailwindcss';
 
 // 1. Import the Skeleton plugin
 import { skeleton } from '@skeletonlabs/tw-plugin';
+import { myCustomTheme } from './my-custom-theme';
 
 const config = {
 	// 2. Opt for dark mode to be handled via the class method
@@ -16,14 +17,32 @@ const config = {
 		)
 	],
 	theme: {
-		extend: {},
+		extend: {
+			typography: {
+				DEFAULT: {
+					css: {
+						maxWidth: '100ch', // add required value here
+					  },
+				}
+			}
+		},
 	},
 	plugins: [
-		// 4. Append the Skeleton plugin (after other plugins)
+		require('@tailwindcss/typography'),
 		skeleton({
-			themes: { preset: ['skeleton']}
-		})
-	]
+			themes: {
+				custom: [
+					myCustomTheme,
+				],
+				// preset: [
+				// 	{
+				// 		name: 'skeleton',
+				// 		enhancements: true,
+				// 	},
+				// ],
+			},
+		}),
+	],
 } satisfies Config;
 
 export default config;

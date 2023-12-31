@@ -1,6 +1,6 @@
 <script lang="ts">
+	import { AppBar } from '@skeletonlabs/skeleton';
 	import { authStore, type UserData } from '../store/authStore';
-	import { fade } from 'svelte/transition';
 
 	let user: UserData;
 	let items: { name: string; href: string }[] = [];
@@ -19,38 +19,20 @@
 	});
 </script>
 
-<ul>
-	{#if user}
-		{#each items as { name, href }}
-			<li in:fade|global>
-				<a {href}><b>{name}</b></a>
-			</li>
-		{/each}
-	{/if}
-</ul>
-
-<style>
-	ul {
-		display: flex;
-		justify-content: left;
-		background-color: #fff;
-		padding-inline-start: 10px;
-		margin-block-start: 0.5em;
-		margin-block-end: 0.5em;
-	}
-	ul a {
-		text-decoration: none;
-		color: #333;
-	}
-
-	li {
-		border-radius: 25px;
-		list-style: none;
-		margin-right: 2rem;
-		padding: 0.3rem 1.2rem;
-	}
-
-	li:hover {
-		background-color: #eee;
-	}
-</style>
+<!-- App Bar -->
+<AppBar>
+	<svelte:fragment slot="lead">
+		{#if user}
+			{#each items as { name, href }}
+				<a class="btn btn-sm variant-ghost-surface" {href}><b>{name}</b></a>
+			{/each}
+		{/if}
+	</svelte:fragment>
+	<svelte:fragment slot="trail">
+		{#if !$authStore || $authStore.role === 'anonymous'}
+			<a class="btn btn-sm variant-ghost-surface" href="/auth/sign-in"> Sign In </a>
+		{:else}
+			<a class="btn btn-sm variant-ghost-surface" href="/auth/sign-out"> Sign Out </a>
+		{/if}
+	</svelte:fragment>
+</AppBar>

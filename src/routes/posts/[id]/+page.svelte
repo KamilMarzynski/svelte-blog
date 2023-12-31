@@ -27,10 +27,3 @@
 {#if user && user.role === 'admin'}
 	<a href="/posts/{data.post.id}/edit">Edit</a>
 {/if}
-
-<style>
-	a {
-		display: block;
-		margin-top: 1rem;
-	}
-</style>

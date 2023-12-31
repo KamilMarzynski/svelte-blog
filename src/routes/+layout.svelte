@@ -7,7 +7,7 @@
 	import { getDoc, doc, setDoc } from 'firebase/firestore';
 	import { authStore, type UserData } from '../lib/store/authStore';
 	import { page } from '$app/stores';
-	import { goto } from '$app/navigation';
+	import { AppShell } from '@skeletonlabs/skeleton';
 
 	const restrictedRoutes = ['/posts/[id]/edit', '/posts/create'];
 
@@ -73,86 +73,13 @@
 	});
 </script>
 
-{#if $page.url.pathname !== '/auth/sign-in'}
-	<div class="header-container">
-		<div class="navigation-container">
-			<Navigation></Navigation>
-		</div>
-		{#if !$authStore || $authStore.role === 'anonymous'}
-			<button class="signin-button" on:click={() => goto('/auth/sign-in')}><b>Sign In</b></button>
-		{:else}
-			<button class="logout-button" on:click={() => goto('/auth/sign-out')}><b>Log Out</b></button>
+<AppShell>
+	<svelte:fragment slot="header">
+		{#if $page.url.pathname !== '/auth/sign-in'}
+			<Navigation />
+			<img class="h-12" src={logo} alt="logo" />
 		{/if}
-	</div>
-{/if}
-
-<div class="logo-container">
-	<img src={logo} alt="logo" />
-</div>
-<div class="content-container">
+	</svelte:fragment>
+	<!-- Page Route Content -->
 	<slot />
-</div>
-
-<style>
-	img {
-		height: 5rem;
-	}
-
-	button {
-		border-radius: 20px;
-		border: none;
-		padding: 0.3rem 1.2rem;
-		font-size: 15px;
-		width: 6rem;
-	}
-
-	button,
-	.signin-button {
-		color: black;
-		background-color: #fff;
-	}
-
-	button,
-	.signin-button:hover {
-		background-color: #eee;
-	}
-
-	button,
-	.logout-button {
-		color: white;
-		background-color: #f44336;
-	}
-
-	button,
-	.logout-button:hover {
-		background-color: #da190b;
-	}
-
-	.header-container {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		background-color: #fff;
-		border-bottom: #999 1px solid;
-		padding: 0 1rem;
-	}
-
-	.logo-container {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	.navigation-container {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	.content-container {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-	}
-</style>
+</AppShell>

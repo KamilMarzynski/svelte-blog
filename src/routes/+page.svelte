@@ -10,11 +10,4 @@
 	};
 </script>
 
-<h1>Start page with most recent posts</h1>
 <PostsList posts={data.recents} />
-
-<style>
-	h1 {
-		margin-bottom: 1rem;
-	}
-</style>
