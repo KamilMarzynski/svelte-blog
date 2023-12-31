@@ -15,12 +15,14 @@
 			const currentPath = window.location.pathname;
 			if (!user && restrictedRoutes.includes(currentPath)) {
 				window.location.href = '/';
-				return;
 			}
 
 			if (user && currentPath === '/auth/sign-in') {
 				window.location.href = '/';
-				return;
+			}
+
+			if (!user && currentPath === '/auth/sign-out') {
+				window.location.href = '/';
 			}
 
 			let dataToSetToStore: UserData = {
@@ -78,7 +80,7 @@
 		{#if !$authStore || $authStore.role === 'anonymous'}
 			<button class="signin-button" on:click={() => goto('/auth/sign-in')}><b>Sign In</b></button>
 		{:else}
-			<button class="logout-button" on:click={() => goto('/auth/log-out')}><b>Log Out</b></button>
+			<button class="logout-button" on:click={() => goto('/auth/sign-out')}><b>Log Out</b></button>
 		{/if}
 	</div>
 {/if}

@@ -3,7 +3,7 @@ import { posts, validPostId } from '$lib/server';
 
 
 export async function PUT({ request, params }) {
-	const { content, title } = await request.json();
+	const { content, title, image } = await request.json();
     const { id } = params;
 
 
@@ -14,6 +14,7 @@ export async function PUT({ request, params }) {
     const post = await posts.update(id, {
         content,
         title,
+        image,
     });
 
 	return json({ id: post.id }, { status: 200 });
