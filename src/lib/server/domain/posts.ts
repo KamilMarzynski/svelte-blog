@@ -9,6 +9,7 @@ export type Post = {
     id: PostId;
     title: string;
     content: string;
+    // image?: string;
     createdAt: number;
     updatedAt: number;
 }

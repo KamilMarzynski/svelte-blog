@@ -24,6 +24,7 @@
 			}
 
 			let dataToSetToStore: UserData = {
+				id: '',
 				role: 'anonymous',
 				email: ''
 			};
@@ -44,6 +45,7 @@
 			if (!docSnap.exists()) {
 				const userRef = doc(db, 'users', user.uid);
 				dataToSetToStore = {
+					id: user.uid,
 					email: user.email,
 					role: 'user'
 				};
@@ -51,6 +53,7 @@
 			} else {
 				const userData = docSnap.data();
 				dataToSetToStore = {
+					id: userData.id,
 					email: userData.email,
 					role: userData.role
 				};
