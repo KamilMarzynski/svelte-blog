@@ -1,11 +1,9 @@
 <script>
-	import PostEditable from "$lib/components/PostEditable.svelte";
-	import ProtectedRoute from "$lib/components/ProtectedRoute.svelte";
-
+	// import PostEditable from '$lib/components/PostEditable.svelte';
+	import ProtectedRoute from '$lib/components/ProtectedRoute.svelte';
+	import TipTapEdit from '$lib/components/TipTapEdit.svelte';
 </script>
 
 <ProtectedRoute roles={['admin']}>
-	<h1>Create a new post</h1>
-
-	<PostEditable />
+	<TipTapEdit />
 </ProtectedRoute>

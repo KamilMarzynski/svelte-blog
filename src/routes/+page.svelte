@@ -1,20 +1,19 @@
-<script lang='ts'>
-    import Navigation from "$lib/components/Navigation.svelte";
-	import PostsList from "$lib/components/PostsList.svelte";
+<script lang="ts">
+	import PostsList from '$lib/components/PostsList.svelte';
 
-    export let data: {
-        recents: {
-            id: string;
-            title: string;
-        }[];
-    };
+	export let data: {
+		recents: {
+			id: string;
+			title: string;
+		}[];
+	};
 </script>
 
 <h1>Start page with most recent posts</h1>
 <PostsList posts={data.recents} />
 
 <style>
-    h1 {
-        margin-bottom: 1rem;
-    }
+	h1 {
+		margin-bottom: 1rem;
+	}
 </style>
