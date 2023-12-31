@@ -9,6 +9,6 @@ export async function load() {
     });
 
     return {
-        summaries: data.map(post => ({ id: post.id, title: post.title }))
+        summaries: data.map(post => ({ id: post.id, title: post.title, image: post.image }))
     };
 }

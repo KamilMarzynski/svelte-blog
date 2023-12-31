@@ -11,6 +11,6 @@ export async function load() {
     });
 
     return {
-        recents: data.map(post => ({ id: post.id, title: post.title }))
+        recents: data.map(post => ({ id: post.id, title: post.title, image: post.image }))
     };
 }

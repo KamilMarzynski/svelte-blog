@@ -4,13 +4,14 @@
 	export let posts: {
 		id: string;
 		title: string;
+		image: string;
 	}[];
 </script>
 
 <ul>
-	{#each posts as { id, title }}
+	{#each posts as { id, title, image }}
 		<li>
-			<ListPostItem {id} {title} />
+			<ListPostItem {id} {title} {image} />
 		</li>
 	{/each}
 </ul>

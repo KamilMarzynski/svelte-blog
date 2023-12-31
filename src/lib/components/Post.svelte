@@ -26,7 +26,7 @@
 
 		const getImage = () => {
 			const images = editor.getHTML().match(/<img[^>]*src="([^"]*)"[^>]*>/i);
-			const image = images ? images[1] : '/static/images/placeholder.png';
+			const image = images ? images[1] : '/src/lib/assets/images/placeholder.png';
 			return image;
 		};
 
@@ -110,7 +110,7 @@
 										pos: number;
 										inside: number;
 									};
-									const node = schema.nodes.image.create({ src: body.url }); // creates the image element
+									const node = schema.nodes.image.create({ src: body.url, class: 'post-image' }); // creates the image element
 									const transaction = view.state.tr.insert(coordinates.pos, node); // places it in the correct position
 									return view.dispatch(transaction);
 								};
@@ -293,6 +293,7 @@
 <style>
 	.editor-container {
 		width: 75%;
+		display: flex;
 	}
 
 	:global(.ProseMirror) {
@@ -315,5 +316,10 @@
 		color: #ced4da;
 		pointer-events: none;
 		height: 0;
+	}
+
+	:global(.tiptap img) {
+		width: 50%;
+		margin: 0 20rem;
 	}
 </style>

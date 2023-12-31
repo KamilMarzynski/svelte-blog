@@ -5,6 +5,7 @@
 		recents: {
 			id: string;
 			title: string;
+			image: string;
 		}[];
 	};
 </script>
