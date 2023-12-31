@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '../app.pcss';
 	import logo from '$lib/assets/logo.png';
 	import Navigation from '$lib/components/Navigation.svelte';
 	import { auth, db } from '$lib/firebase/firebase';
@@ -75,7 +76,7 @@
 {#if $page.url.pathname !== '/auth/sign-in'}
 	<div class="header-container">
 		<div class="navigation-container">
-			<Navigation />
+			<Navigation></Navigation>
 		</div>
 		{#if !$authStore || $authStore.role === 'anonymous'}
 			<button class="signin-button" on:click={() => goto('/auth/sign-in')}><b>Sign In</b></button>
