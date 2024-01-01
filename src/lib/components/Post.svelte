@@ -7,6 +7,7 @@
 	import { onMount } from 'svelte';
 	import type { EditorView } from 'prosemirror-view';
 	import type { Slice } from 'prosemirror-model';
+	import { SlashMenu } from '$lib/plugins/slash';
 
 	export let editable: boolean = true;
 	export let content: string = '';
@@ -141,6 +142,7 @@
 				}
 			},
 			extensions: [
+				SlashMenu,
 				TipTapImage,
 				CustomDocument,
 				StarterKit.configure({
@@ -160,7 +162,7 @@
 {#if editor && editable}
 	<div>
 		<div class="mx-4">
-			<button
+			<!-- <button
 				on:click={() => editor.chain().focus().toggleBold().run()}
 				disabled={!editor.can().chain().focus().toggleBold().run()}
 				class="btn-primary btn {editor.isActive('bold') ? 'variant-ringed-primary' : ''}"
@@ -294,7 +296,7 @@
 				class="btn-primary btn"
 			>
 				redo
-			</button>
+			</button> -->
 			<button
 				on:click={() => handleSendPost()}
 				disabled={!editor.can().chain().focus().undo().run()}
