@@ -1,20 +1,22 @@
 <script lang="ts">
-	import { AppBar } from '@skeletonlabs/skeleton';
+	import { AppBar, TabAnchor, TabGroup } from '@skeletonlabs/skeleton';
 	import { authStore, type UserData } from '../store/authStore';
+	import { writable } from 'svelte/store';
 
 	let user: UserData;
-	let items: { name: string; href: string }[] = [];
+	const items = writable([
+		{ name: 'Home', href: '/' },
+		{ name: 'Posts', href: '/posts' }
+	]);
 
 	authStore.subscribe((curr: UserData) => {
 		user = curr;
 
-		items = [
-			{ name: 'Home', href: '/' },
-			{ name: 'Posts', href: '/posts' }
-		];
-
 		if (user && user.role === 'admin') {
-			items.push({ name: 'Add new post', href: '/posts/create' });
+			items.update((items) => {
+				items.push({ name: 'Add new post', href: '/posts/create' });
+				return items;
+			});
 		}
 	});
 </script>
@@ -22,17 +24,26 @@
 <!-- App Bar -->
 <AppBar>
 	<svelte:fragment slot="lead">
-		{#if user}
-			{#each items as { name, href }}
-				<a class="btn btn-sm variant-ghost-surface" {href}><b>{name}</b></a>
+		<TabGroup border="" rounded="rounded-container-token">
+			{#each $items as { name, href }}
+				<TabAnchor {href}>
+					{name}
+				</TabAnchor>
 			{/each}
-		{/if}
+		</TabGroup>
 	</svelte:fragment>
 	<svelte:fragment slot="trail">
-		{#if !$authStore || $authStore.role === 'anonymous'}
-			<a class="btn btn-sm variant-ghost-surface" href="/auth/sign-in"> Sign In </a>
-		{:else}
-			<a class="btn btn-sm variant-ghost-surface" href="/auth/sign-out"> Sign Out </a>
-		{/if}
+		<TabGroup border="" rounded="rounded-container-token">
+			{#if !$authStore}
+				<div class="placeholder px-12 py-5"></div>
+				<!-- <TabAnchor class="placeholder  px-4 py-2" /> -->
+			{:else if $authStore.role === 'anonymous'}
+				<TabAnchor class="variant-glass-success" href="/auth/sign-in">Sign In</TabAnchor>
+				<!-- <a class="variant-ghost-surface btn btn-sm" href="/auth/sign-in"> Sign In </a> -->
+			{:else}
+				<TabAnchor class="variant-glass-warning" href="/auth/sign-out">Sign Out</TabAnchor>
+				<!-- <a class="variant-ghost-surface btn btn-sm" href="/auth/sign-out"> Sign Out </a> -->
+			{/if}
+		</TabGroup>
 	</svelte:fragment>
 </AppBar>
