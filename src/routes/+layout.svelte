@@ -77,7 +77,9 @@
 	<svelte:fragment slot="header">
 		{#if $page.url.pathname !== '/auth/sign-in'}
 			<Navigation />
-			<img class="h-12" src={logo} alt="logo" />
+			<div class="flex flex-col items-center">
+				<img class="h-12" src={logo} alt="logo" />
+			</div>
 		{/if}
 	</svelte:fragment>
 	<!-- Page Route Content -->

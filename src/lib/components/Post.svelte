@@ -98,7 +98,6 @@
 							.then(async function (response) {
 								const body = await response.json();
 								let image = new Image();
-								console.log(body.url);
 								image.src = body.url;
 
 								image.onload = function () {
@@ -138,7 +137,7 @@
 			editorProps: {
 				handleDrop,
 				attributes: {
-					class: 'prose justify-self-center focus:outline-none w-[1024px]'
+					class: 'prose justify-self-center focus:outline-none max-w-[1024px]'
 				}
 			},
 			extensions: [
@@ -309,3 +308,9 @@
 {/if}
 
 <div class="mx-12 grid" bind:this={element} />
+
+<!-- <style>
+	:global(.tiptap img) {
+		max-width: 1024px;
+	}
+</style> -->
