@@ -10,7 +10,7 @@
 	import { SlashMenu } from '$lib/plugins/slash';
 
 	export let editable: boolean = true;
-	export let content: string = 'Post title';
+	export let content: string = 'Add title';
 	export let id: string = '';
 
 	const editing: boolean = id === '' && editable ? false : true;
@@ -143,11 +143,14 @@
 				}
 			},
 			extensions: [
+				CustomDocument,
 				SlashMenu,
 				TipTapImage,
-				CustomDocument,
 				StarterKit.configure({
 					document: false
+				}),
+				Placeholder.configure({
+					placeholder: "Type '/' for commands"
 				})
 			],
 			onTransaction: () => {
@@ -179,8 +182,6 @@
 <style>
 	:global(.prose.non-editable) {
 		@apply w-full xl:w-[1280px] xl:p-12;
-		/* max-width: 50%;
-		padding: 12px; */
 	}
 
 	:global(.prose.editable) {
