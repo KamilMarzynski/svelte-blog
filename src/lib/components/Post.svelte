@@ -8,17 +8,31 @@
 	import type { EditorView } from 'prosemirror-view';
 	import type { Slice } from 'prosemirror-model';
 	import { SlashMenu } from '$lib/plugins/slash';
+	import { getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 
 	export let editable: boolean = true;
 	export let content: string = 'Add title';
-	export let id: string = '';
+	export let id = '';
 
-	const editing: boolean = id === '' && editable ? false : true;
+	let editing: boolean = id === '' && editable ? false : true;
 
 	let element: Element;
 	let editor: Editor;
 
+	let saveTimeout: any;
+
+	const t: ToastSettings = {
+		message: 'Your post has been saved',
+		timeout: 2000
+	};
+	const toastStore = getToastStore();
+
 	const handleSendPost = () => {
+		const content = editor.getHTML();
+
+		if (content.length < 10) return;
+
+		editing = id === '' && editable ? false : true;
 		const getTitle = () => {
 			const headings = editor.getHTML().match(/<h1[^>]*>([^<]+)<\/h1>/i);
 			const title = headings ? headings[1] : '';
@@ -32,7 +46,6 @@
 		};
 
 		const image = getImage();
-		const content = editor.getHTML();
 		const title = getTitle();
 
 		if (editing) {
@@ -44,8 +57,8 @@
 				body: JSON.stringify({ title, content, image })
 			})
 				.then((res) => res.json())
-				.then((data) => {
-					window.location.href = `/posts/${data.id}`;
+				.then(() => {
+					toastStore.trigger(t);
 				})
 				.catch((err) => console.log(err));
 		} else {
@@ -58,7 +71,8 @@
 			})
 				.then((res) => res.json())
 				.then((data) => {
-					window.location.href = `/posts/${data.id}`;
+					id = data.id;
+					toastStore.trigger(t);
 				})
 				.catch((err) => console.log(err));
 		}
@@ -156,26 +170,25 @@
 			onTransaction: () => {
 				// force re-render so `editor.isActive` works as expected
 				editor = editor;
+			},
+
+			onUpdate: async ({ editor }) => {
+				if (editor.getHTML() === content) return;
+				if (saveTimeout) clearTimeout(saveTimeout);
+				saveTimeout = setTimeout(async () => {
+					console.log('saved post');
+					await handleSendPost();
+				}, 2000);
+			},
+
+			onDestroy: () => {
+				if (saveTimeout) clearTimeout(saveTimeout);
 			}
 		});
 
 		editor.setEditable(editable);
 	});
 </script>
-
-{#if editor && editable}
-	<div>
-		<div class="mx-4">
-			<button
-				on:click={() => handleSendPost()}
-				disabled={!editor.can().chain().focus().undo().run()}
-				class="btn-primary btn"
-			>
-				save post
-			</button>
-		</div>
-	</div>
-{/if}
 
 <div class="mx-12 grid" bind:this={element} />
 

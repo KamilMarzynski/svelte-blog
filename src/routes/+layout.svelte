@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '../app.pcss';
-	import { Drawer, getDrawerStore, initializeStores } from '@skeletonlabs/skeleton';
+	import { Drawer, Toast, getDrawerStore, initializeStores } from '@skeletonlabs/skeleton';
 	import logo from '$lib/assets/logo.png';
 	import Navigation from '$lib/components/Navigation.svelte';
 	import { auth, db } from '$lib/firebase/firebase';
@@ -107,7 +107,7 @@
 		<!-- (fallback contents) -->
 	{/if}
 </Drawer>
-
+<Toast />
 <AppShell>
 	<svelte:fragment slot="header">
 		{#if $page.url.pathname !== '/auth/sign-in'}
