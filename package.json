@@ -17,6 +17,7 @@
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"@tailwindcss/forms": "^0.5.7",
 		"@tailwindcss/typography": "^0.5.10",
 		"@types/node": "^20.10.6",
 		"@types/uuid": "^9.0.7",
@@ -54,9 +55,11 @@
 		"@tiptap/pm": "^2.1.13",
 		"@tiptap/starter-kit": "^2.1.13",
 		"@tiptap/suggestion": "^2.1.13",
+		"clsx": "^2.1.0",
 		"firebase": "^10.7.1",
 		"joi": "^17.11.0",
 		"lucide-svelte": "^0.292.0",
+		"tailwind-merge": "^2.2.0",
 		"uuid": "^9.0.1"
 	}
 }

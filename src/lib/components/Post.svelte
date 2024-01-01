@@ -10,7 +10,7 @@
 	import { SlashMenu } from '$lib/plugins/slash';
 
 	export let editable: boolean = true;
-	export let content: string = '';
+	export let content: string = 'Post title';
 	export let id: string = '';
 
 	const editing: boolean = id === '' && editable ? false : true;
@@ -137,7 +137,9 @@
 			editorProps: {
 				handleDrop,
 				attributes: {
-					class: 'prose justify-self-center focus:outline-none max-w-[1024px]'
+					class: `prose justify-self-center focus:outline-none ${
+						editable ? 'editable' : 'non-editable'
+					} max-w-full`
 				}
 			},
 			extensions: [
@@ -161,141 +163,6 @@
 {#if editor && editable}
 	<div>
 		<div class="mx-4">
-			<!-- <button
-				on:click={() => editor.chain().focus().toggleBold().run()}
-				disabled={!editor.can().chain().focus().toggleBold().run()}
-				class="btn-primary btn {editor.isActive('bold') ? 'variant-ringed-primary' : ''}"
-			>
-				bold
-			</button>
-			<button
-				on:click={() => editor.chain().focus().toggleItalic().run()}
-				disabled={!editor.can().chain().focus().toggleItalic().run()}
-				class="btn-primary btn {editor.isActive('italic') ? 'variant-ringed-primary' : ''}"
-			>
-				italic
-			</button>
-			<button
-				on:click={() => editor.chain().focus().toggleStrike().run()}
-				disabled={!editor.can().chain().focus().toggleStrike().run()}
-				class="btn-primary btn {editor.isActive('strike') ? 'variant-ringed-primary' : ''}"
-			>
-				strike
-			</button>
-			<button
-				on:click={() => editor.chain().focus().toggleCode().run()}
-				disabled={!editor.can().chain().focus().toggleCode().run()}
-				class="btn-primary btn {editor.isActive('code') ? 'variant-ringed-primary' : ''}"
-			>
-				code
-			</button>
-			<button class="btn-primary btn" on:click={() => editor.chain().focus().unsetAllMarks().run()}>
-				clear marks
-			</button>
-			<button class="btn-primary btn" on:click={() => editor.chain().focus().clearNodes().run()}>
-				clear nodes
-			</button>
-			<button
-				on:click={() => editor.chain().focus().setParagraph().run()}
-				class="btn-primary btn {editor.isActive('paragraph') ? 'variant-ringed-primary' : ''}"
-			>
-				paragraph
-			</button>
-			<button
-				on:click={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-				class="btn-primary btn {editor.isActive('heading', { level: 1 })
-					? 'variant-ringed-primary'
-					: ''}"
-			>
-				h1
-			</button>
-			<button
-				on:click={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-				class="btn-primary btn {editor.isActive('heading', { level: 2 })
-					? 'variant-ringed-primary'
-					: ''}"
-			>
-				h2
-			</button>
-			<button
-				on:click={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-				class="btn-primary btn {editor.isActive('heading', { level: 3 })
-					? 'variant-ringed-primary'
-					: ''}"
-			>
-				h3
-			</button>
-			<button
-				on:click={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-				class="btn-primary btn {editor.isActive('heading', { level: 4 })
-					? 'variant-ringed-primary'
-					: ''}"
-			>
-				h4
-			</button>
-			<button
-				on:click={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
-				class="btn-primary btn {editor.isActive('heading', { level: 5 })
-					? 'variant-ringed-primary'
-					: ''}"
-			>
-				h5
-			</button>
-			<button
-				on:click={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
-				class="btn-primary btn {editor.isActive('heading', { level: 6 })
-					? 'variant-ringed-primary'
-					: ''}"
-			>
-				h6
-			</button>
-			<button
-				on:click={() => editor.chain().focus().toggleBulletList().run()}
-				class="btn-primary btn {editor.isActive('bulletList') ? 'variant-ringed-primary' : ''}"
-			>
-				bullet list
-			</button>
-			<button
-				on:click={() => editor.chain().focus().toggleOrderedList().run()}
-				class="btn-primary btn {editor.isActive('orderedList') ? 'variant-ringed-primary' : ''}"
-			>
-				ordered list
-			</button>
-			<button
-				on:click={() => editor.chain().focus().toggleCodeBlock().run()}
-				class="btn-primary btn {editor.isActive('codeBlock') ? 'variant-ringed-primary' : ''}"
-			>
-				code block
-			</button>
-			<button
-				on:click={() => editor.chain().focus().toggleBlockquote().run()}
-				class="btn-primary btn {editor.isActive('blockquote') ? 'variant-ringed-primary' : ''}"
-			>
-				blockquote
-			</button>
-			<button
-				on:click={() => editor.chain().focus().setHorizontalRule().run()}
-				class="btn-primary btn"
-			>
-				horizontal rule
-			</button>
-			<button on:click={() => editor.chain().focus().setHardBreak().run()} class="btn-primary btn">
-				hard break
-			</button>
-			<button
-				on:click={() => editor.chain().focus().undo().run()}
-				disabled={!editor.can().chain().focus().undo().run()}
-				class="btn-primary btn"
-			>
-				undo
-			</button>
-			<button
-				on:click={() => editor.chain().focus().redo().run()}
-				disabled={!editor.can().chain().focus().redo().run()}
-				class="btn-primary btn"
-			>
-				redo
-			</button> -->
 			<button
 				on:click={() => handleSendPost()}
 				disabled={!editor.can().chain().focus().undo().run()}
@@ -309,8 +176,19 @@
 
 <div class="mx-12 grid" bind:this={element} />
 
-<!-- <style>
-	:global(.tiptap img) {
-		max-width: 1024px;
+<style>
+	:global(.prose.non-editable) {
+		@apply w-full xl:w-[1024px] xl:p-12;
+		/* max-width: 50%;
+		padding: 12px; */
 	}
-</style> -->
+
+	:global(.prose.editable) {
+		@apply w-[1024px] p-12;
+		box-shadow: #e2e8f0 0px 0px 0px 1px inset;
+	}
+
+	:global(.prose img) {
+		@apply w-full rounded-lg shadow-lg;
+	}
+</style>

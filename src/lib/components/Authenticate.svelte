@@ -1,6 +1,4 @@
 <script lang>
-	import { goto } from '$app/navigation';
-	import { authStore } from '$lib/store/authStore';
 	import { authHandlers } from '../auth/auth';
 
 	let email = '';
@@ -38,47 +36,57 @@
 	}
 </script>
 
-<div class="authContainer">
-	<form>
-		<h1>{register ? 'Register' : 'Login'}</h1>
-		{#if error}
-			<p class="error">The information you have entered is not correct</p>
-		{/if}
-		<label>
-			<p class={email ? ' above' : ' center'}>Email</p>
-			<input bind:value={email} type="email" placeholder="Email" />
-		</label>
-		<label>
-			<p class={password ? ' above' : ' center'}>Password</p>
-			<input bind:value={password} type="password" placeholder="Password" />
-		</label>
-		{#if register}
-			<label>
-				<p class={confirmPass ? ' above' : ' center'}>Confirm Password</p>
-				<input bind:value={confirmPass} type="password" placeholder="Confirm Password" />
-			</label>
-		{/if}
-
-		<button on:click={handleAuthenticate} type="button" class="submitBtn">
-			{#if authenticating}
-				<i class="fa-solid fa-spinner loadingSpinner" />
-			{:else}
-				Submit
+<div class="flex flex-col items-center">
+	<div class="m-4 w-4/5 max-w-[900px]">
+		<form>
+			<h1 class="text-xl">{register ? 'Register' : 'Login'}</h1>
+			{#if error}
+				<p class="error">The information you have entered is not correct</p>
 			{/if}
-		</button>
-	</form>
-	<div class="options">
-		<p>Or</p>
-		{#if register}
-			<div>
-				<p>Already have an account?</p>
-				<p on:click={handleRegister} on:keydown={() => {}}>Login</p>
-			</div>
-		{:else}
-			<div>
-				<p>Don't have an account?</p>
-				<p on:click={handleRegister} on:keydown={() => {}}>Register</p>
-			</div>
-		{/if}
+			<label class="label">
+				<p class={email ? ' above' : ' center'}>Email</p>
+				<input bind:value={email} type="email" placeholder="Email" class="input" />
+			</label>
+			<label class="label">
+				<p class={password ? ' above' : ' center'}>Password</p>
+				<input bind:value={password} type="password" placeholder="Password" class="input" />
+			</label>
+			{#if register}
+				<label class="label">
+					<p class={confirmPass ? ' above' : ' center'}>Confirm Password</p>
+					<input
+						bind:value={confirmPass}
+						type="password"
+						placeholder="Confirm Password"
+						class="input"
+					/>
+				</label>
+			{/if}
+
+			<button on:click={handleAuthenticate} type="button" class="variant-filled btn my-2">
+				{#if authenticating}
+					<i class="fa-solid fa-spinner loadingSpinner" />
+				{:else}
+					Submit
+				{/if}
+			</button>
+		</form>
+		<div>
+			{#if register}
+				<div>
+					<p>Already have an account?</p>
+					<button class="variant-filled btn my-2" on:click={handleRegister} on:keydown={() => {}}
+						>Login</button
+					>
+				</div>
+			{:else}
+				<div>
+					<p>Don't have an account?</p>
+					<button class="variant-filled btn my-2" on:click={handleRegister} on:keydown={() => {}}
+						>Register</button
+					>
+				</div>
+			{/if}
+		</div>
 	</div>
 </div>
