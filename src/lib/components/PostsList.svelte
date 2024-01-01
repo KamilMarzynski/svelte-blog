@@ -8,15 +8,13 @@
 	}[];
 </script>
 
-<ul>
+<div class="flex flex-col items-center">
 	{#each posts as { id, title, image }}
-		<li>
-			<ListPostItem {id} {title} {image} />
-		</li>
+		<ListPostItem {id} {title} {image} />
 	{/each}
-</ul>
+</div>
 
-<style>
+<!-- <style>
 	ul {
 		list-style: none;
 		margin: 0;
@@ -25,5 +23,5 @@
 
 	li {
 		margin-bottom: 1rem;
-	}
-</style>
+	} -->
+<!-- </style> -->
