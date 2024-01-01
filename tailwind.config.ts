@@ -101,12 +101,6 @@ const config = {
 				custom: [
 					myCustomTheme,
 				],
-				// preset: [
-				// 	{
-				// 		name: 'skeleton',
-				// 		enhancements: true,
-				// 	},
-				// ],
 			},
 		}),
 	],

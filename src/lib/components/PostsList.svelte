@@ -8,7 +8,7 @@
 	}[];
 </script>
 
-<div class="flex flex-col items-center">
+<div class="flex flex-col items-center divide-y">
 	{#each posts as { id, title, image }}
 		<ListPostItem {id} {title} {image} />
 	{/each}

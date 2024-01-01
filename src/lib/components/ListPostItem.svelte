@@ -6,16 +6,9 @@
 	export let image: string;
 </script>
 
-<button
-	on:click={() => goto(`/posts/${id}`)}
-	class="card-hover block max-w-208 rounded-lg p-4 hover:variant-glass-surface"
->
+<button on:click={() => goto(`/posts/${id}`)} class="my-2 block max-w-208 p-4">
 	<div class="flex content-between">
-		<img
-			class="h-1/2 max-h-72 w-1/2 max-w-72 rounded-lg object-cover shadow-lg"
-			src={image}
-			alt={title}
-		/>
+		<img class="h-1/2 max-h-72 w-1/2 max-w-72 object-cover shadow-lg" src={image} alt={title} />
 		<div class="flex flex-col items-start pl-4">
 			<span class="text-2xl">{title}</span>
 			<span class="text-left"
