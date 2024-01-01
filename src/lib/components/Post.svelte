@@ -178,14 +178,13 @@
 
 <style>
 	:global(.prose.non-editable) {
-		@apply w-full xl:w-[1024px] xl:p-12;
+		@apply w-full xl:w-[1280px] xl:p-12;
 		/* max-width: 50%;
 		padding: 12px; */
 	}
 
 	:global(.prose.editable) {
-		@apply w-[1024px] p-12;
-		box-shadow: #e2e8f0 0px 0px 0px 1px inset;
+		@apply w-[1280px] p-12;
 	}
 
 	:global(.prose img) {

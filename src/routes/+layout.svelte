@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '../app.pcss';
+	import { Drawer, getDrawerStore, initializeStores } from '@skeletonlabs/skeleton';
 	import logo from '$lib/assets/logo.png';
 	import Navigation from '$lib/components/Navigation.svelte';
 	import { auth, db } from '$lib/firebase/firebase';
@@ -8,8 +9,11 @@
 	import { authStore, type UserData } from '../lib/store/authStore';
 	import { page } from '$app/stores';
 	import { AppShell } from '@skeletonlabs/skeleton';
+	import { goto } from '$app/navigation';
 
 	const restrictedRoutes = ['/posts/[id]/edit', '/posts/create'];
+	initializeStores();
+	const drawerStore = getDrawerStore();
 
 	onMount(() => {
 		const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -72,6 +76,37 @@
 		return unsubscribe;
 	});
 </script>
+
+<Drawer>
+	{#if $drawerStore.id === 'login-menu'}
+		<ul>
+			<li class="p-4" on:click={() => drawerStore.close()}>Close</li>
+			<li class="p-4" on:click={() => drawerStore.close()}>Profile</li>
+			{#if $authStore.role === 'admin'}
+				<li
+					class="p-4"
+					on:click={() => {
+						goto('/posts/create');
+						drawerStore.close();
+					}}
+				>
+					New post
+				</li>
+			{/if}
+			<li
+				class="p-4"
+				on:click={() => {
+					goto('/auth/sign-out');
+					drawerStore.close();
+				}}
+			>
+				Sign out
+			</li>
+		</ul>
+	{:else}
+		<!-- (fallback contents) -->
+	{/if}
+</Drawer>
 
 <AppShell>
 	<svelte:fragment slot="header">
