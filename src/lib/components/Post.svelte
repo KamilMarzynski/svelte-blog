@@ -4,14 +4,14 @@
 	import StarterKit from '@tiptap/starter-kit';
 	import { Image as TipTapImage } from '@tiptap/extension-image';
 	import { Editor } from '@tiptap/core';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import type { EditorView } from 'prosemirror-view';
 	import type { Slice } from 'prosemirror-model';
 	import { SlashMenu } from '$lib/plugins/slash';
 	import { getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 
 	export let editable: boolean = true;
-	export let content: string = 'Add title';
+	export let content: string = '<h1>Add title<h1>';
 	export let id = '';
 
 	let editing: boolean = id === '' && editable ? false : true;
@@ -28,9 +28,11 @@
 	const toastStore = getToastStore();
 
 	const handleSendPost = () => {
-		const content = editor.getHTML();
+		const currentContent = editor.getHTML();
 
-		if (content.length < 10) return;
+		if (currentContent.length < 30 || currentContent === content) {
+			return;
+		}
 
 		editing = id === '' && editable ? false : true;
 		const getTitle = () => {
@@ -57,7 +59,8 @@
 				body: JSON.stringify({ title, content, image })
 			})
 				.then((res) => res.json())
-				.then(() => {
+				.then((data) => {
+					content = currentContent;
 					toastStore.trigger(t);
 				})
 				.catch((err) => console.log(err));
@@ -72,6 +75,7 @@
 				.then((res) => res.json())
 				.then((data) => {
 					id = data.id;
+					content = currentContent;
 					toastStore.trigger(t);
 				})
 				.catch((err) => console.log(err));
@@ -173,8 +177,9 @@
 			},
 
 			onUpdate: async ({ editor }) => {
-				if (editor.getHTML() === content) return;
-				if (saveTimeout) clearTimeout(saveTimeout);
+				if (saveTimeout) {
+					clearTimeout(saveTimeout);
+				}
 				saveTimeout = setTimeout(async () => {
 					console.log('saved post');
 					await handleSendPost();
@@ -182,11 +187,20 @@
 			},
 
 			onDestroy: () => {
-				if (saveTimeout) clearTimeout(saveTimeout);
+				if (saveTimeout) {
+					clearTimeout(saveTimeout);
+				}
 			}
 		});
 
 		editor.setEditable(editable);
+	});
+
+	onDestroy(async () => {
+		if (saveTimeout) {
+			clearTimeout(saveTimeout);
+			await handleSendPost();
+		}
 	});
 </script>
 
