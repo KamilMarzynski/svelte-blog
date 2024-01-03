@@ -27,7 +27,7 @@
 </script>
 
 <div class="flex flex-col items-center">
-	<div class="grid max-w-[1024px] grid-cols-[auto_1fr_auto] items-center gap-4 p-4">
+	<div class="grid max-w-[1440px] grid-cols-[auto_1fr_auto] items-center gap-4 p-4">
 		<!-- Button: Left -->
 		<button type="button" class="variant-filled btn-icon" on:click={carouselLeft}>
 			<ArrowLeft />
@@ -39,16 +39,16 @@
 		>
 			{#each posts as { id, title, image }}
 				<div
-					class="flex min-w-fit cursor-pointer snap-center flex-col rounded-container-token"
+					class="relative min-w-fit cursor-pointer snap-center flex-col"
 					on:click={() => goto(`/posts/${id}`)}
 				>
 					<img
-						class="w-[1024px] snap-center rounded-container-token"
+						class="aspect-[2/1] w-[1440px] snap-center object-cover"
 						src={image}
 						alt={title}
 						loading="lazy"
 					/>
-					<span class="text-2xl">
+					<span class="absolute bottom-2 left-2 text-white sm:bottom-8 sm:left-6 sm:text-6xl">
 						{title}
 					</span>
 				</div>
