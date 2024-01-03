@@ -4,13 +4,13 @@ import { posts } from "$lib";
 // this is a good way to pass data down to nested routes
 // 
 export async function load() {
-    const { data } = await posts.get({
+    const { data } = await posts.getAll({
         limit: 3,
         order: 'desc',
         orderBy: 'createdAt',
     });
 
     return {
-        recents: data.map(post => ({ id: post.id, title: post.title, image: post.image }))
+        recents: data.map(post => ({ id: post.id, title: post.data.title, image: post.data.image }))
     };
 }

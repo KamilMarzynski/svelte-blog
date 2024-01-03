@@ -1,12 +1,12 @@
 import { db } from "../../firebase/firebase";
-import type { Branded } from "$lib/types/branded";
 import { QueryConstraint, QueryDocumentSnapshot, collection, doc, getDoc, getDocs, limit, orderBy, query, setDoc, startAt, type DocumentData, type SnapshotOptions } from "firebase/firestore";
 import { v4 } from "uuid";
+import type { Repository } from "$lib/types/repository";
+import type { Entity, EntityId } from "$lib/types/entity";
 
-export type PostId = Branded<string, "PostId">;
+export type PostId = EntityId<'PostId'>;
 
-export type Post = {
-    id: PostId;
+export type PostData = {
     title: string;
     content: string;
     image: string;
@@ -14,60 +14,55 @@ export type Post = {
     updatedAt: number;
 }
 
+export type Post = Entity<PostId, PostData>
+
 export const getPostId = () => v4() as PostId;
 
 export const validPostId = (id: string): id is PostId => {
     return id.length === 36;
 }
 
-export type SavePost = Omit<Post, 'id' | 'createdAt' | 'updatedAt'>;
-export type UpdatePost = Omit<Partial<SavePost>, 'id' | 'createdAt' | 'updatedAt'>;
-export type PostsQuery = {
-    limit?: number;
-    page?: number;
-    orderBy?: 'createdAt';
-    order?: 'asc' | 'desc';
-}
-
 const postConverter = {
-    toFirestore: (post: Post) => post,
+    toFirestore: (post: Post) => ({ id: post.id, ...post.data }),
     fromFirestore: (snapshot: QueryDocumentSnapshot<DocumentData, DocumentData>, options?: SnapshotOptions): Post => {
         const data = snapshot.data(options);
-        return { ...data, id: snapshot.id } as Post;
+        return { data, id: snapshot.id } as Post;
     }
 };
 
 
-export const posts = {
-    save: async (savePost: SavePost) => {
+export const posts: Repository<Post> = {
+    save: async (data: Omit<PostData, 'createdAt' | 'updatedAt'>) => {
         const id = getPostId();
         const createdAt = Date.now();
         const updatedAt = Date.now();
 
-        const newPost: Post = { ...savePost, id, createdAt, updatedAt };
-        const postRef = doc(db, 'posts', id);
+        const postData: Post['data'] = { ...data, createdAt, updatedAt };
+        const postRef = doc(db, 'posts', id).withConverter(postConverter);
+        const newPost: Post = { id, data: postData };
 
         await setDoc(postRef, newPost);
         return newPost;
     },
 
-    update: async (id: PostId, updatePost: Partial<SavePost>) => {
+    update: async (id: PostId, data: Omit<PostData, 'createdAt' | 'updatedAt'>) => {
         const postRef = doc(db, 'posts', id).withConverter(postConverter);
         const postSnap = await getDoc(postRef);
 
         if (!postSnap.exists()) {
             throw new Error(`Post ${id} does not exist`);
         }
-        const data = postSnap.data();
+        const existingData = postSnap.data().data;
 
         const updatedAt = Date.now();
-        const updatedPost: Post = { ...data, ...updatePost, updatedAt };
+        const updatedData: Post['data'] = { ...existingData, ...data, updatedAt };
+        const updatedPost: Post = { id, data: updatedData };
 
         await setDoc(postRef, updatedPost);
         return updatedPost;
     },
 
-    getById: async (id: PostId) => {
+    get: async (id: PostId) => {
         const postRef = doc(db, 'posts', id).withConverter(postConverter);
         const postSnap = await getDoc(postRef);
 
@@ -78,7 +73,7 @@ export const posts = {
         return postSnap.data();
     },
 
-    get: async (postsQuery?: PostsQuery) => { 
+    getAll: async (postsQuery?) => { 
         const queryLimit = postsQuery?.limit ?? 10;
         const page = postsQuery?.page ?? 1;
         const queryOrder = postsQuery?.order ?? 'desc';
@@ -115,5 +110,8 @@ export const posts = {
             count: countSnapshot.size,
             maxPage: Math.ceil(countSnapshot.size / queryLimit)
         }};
+    },
+    delete: async (id: PostId) => {
+        console.log('deleteing post', id)
     }
 }

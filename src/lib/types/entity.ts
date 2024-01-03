@@ -1,20 +1,13 @@
 import type { Branded } from "./branded";
-import type { Repository } from "./repository";
 
 export type EntityId<N extends string> = Branded<string, N>
 
-type PostId = EntityId<'PostId'>
+type BaseEntityData = {
+    createdAt: number
+    updatedAt: number
+}
 
 export type Entity<ID extends EntityId<string>, D> = {
     id: ID
-    data: D
+    data: D & BaseEntityData
 }
-
-type PostData = {
-    title: string
-    content: string
-}
-
-type Post = Entity<PostId, PostData>
-
-export type PostRepository = Repository<Post>

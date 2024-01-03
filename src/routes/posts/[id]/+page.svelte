@@ -10,7 +10,9 @@
 
 	export let data: {
 		post: {
-			content: string;
+			data: {
+				content: string;
+			};
 			id: string;
 		};
 		// recents is available because of +layout.server.ts which is in parent directory
@@ -22,7 +24,7 @@
 	};
 </script>
 
-<Post content={data.post.content} editable={false} id={data.post.id} />
+<Post content={data.post.data.content} editable={false} id={data.post.id} />
 
 {#if user && user.role === 'admin'}
 	<a href="/posts/{data.post.id}/edit">Edit</a>
