@@ -5,8 +5,10 @@
 
 	export let data: {
 		post: {
-			title: string;
-			content: string;
+			data: {
+				content: string;
+				title: string;
+			};
 			id: string;
 		};
 	};
@@ -14,6 +16,6 @@
 
 <ProtectedRoute roles={['admin']}>
 	<EditorTheme>
-		<Post content={data.post.content} id={data.post.id} />
+		<Post content={data.post.data.content} id={data.post.id} />
 	</EditorTheme>
 </ProtectedRoute>

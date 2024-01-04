@@ -11,7 +11,7 @@
 	import { getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 
 	export let editable: boolean = true;
-	export let content: string = '<h1>Add title<h1>';
+	export let content: string = 'Add title';
 	export let id = '';
 
 	let editing: boolean = id === '' && editable ? false : true;
@@ -56,7 +56,7 @@
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ title, content, image })
+				body: JSON.stringify({ title, content: currentContent, image })
 			})
 				.then((res) => res.json())
 				.then((data) => {
@@ -70,7 +70,7 @@
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ title, content, image })
+				body: JSON.stringify({ title, content: currentContent, image })
 			})
 				.then((res) => res.json())
 				.then((data) => {
@@ -177,11 +177,14 @@
 			},
 
 			onUpdate: async ({ editor }) => {
+				if (!editable) {
+					return;
+				}
+
 				if (saveTimeout) {
 					clearTimeout(saveTimeout);
 				}
 				saveTimeout = setTimeout(async () => {
-					console.log('saved post');
 					await handleSendPost();
 				}, 2000);
 			},
