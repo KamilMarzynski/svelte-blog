@@ -44,9 +44,8 @@ export const posts: Repository<Post> = {
 
             await setDoc(postRef, newPost);
             return newPost;
-        // TODO: meaningful error handling
         } catch (error) {
-            throw new Error()
+            throw new Error('could not save post')
         }
     },
 
@@ -66,9 +65,8 @@ export const posts: Repository<Post> = {
 
             await setDoc(postRef, updatedPost);
             return updatedPost;
-        // TODO: meaningful error handling
         } catch {
-            throw new Error()
+            throw new Error('could not update post')
         }
     },
 

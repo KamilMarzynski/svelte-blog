@@ -9,12 +9,10 @@
 	import { getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 	import { handleDrop } from './utils/handleDrop';
 
-	export let editable: boolean = true;
+	export let editable: boolean = false;
 	export let id = '';
 	export let content: string =
 		localStorage.getItem(`post-${id}`) || localStorage.getItem('post') || 'Add title';
-
-	let editing: boolean = id === '' && editable ? false : true;
 
 	let element: Element;
 	let editor: Editor;
@@ -40,7 +38,7 @@
 			return;
 		}
 
-		editing = id === '' && editable ? false : true;
+		const updating = id !== '';
 
 		const getTitle = () => {
 			const headings = editor.getHTML().match(/<h1[^>]*>([^<]+)<\/h1>/i);
@@ -54,55 +52,61 @@
 			return image;
 		};
 
-		const image = getImage();
-		const title = getTitle();
+		const onSuccess = (savedId?: string) => {
+			updating ? localStorage.removeItem(`post-${id}`) : localStorage.removeItem('post');
+			id = savedId || id;
+			toastStore.trigger(postSavedToastSettings);
+			content = contentToSend;
+		};
 
-		if (editing) {
+		const onFailure = () => {
+			updating
+				? localStorage.setItem(`post-${id}`, contentToSend)
+				: localStorage.setItem('post', contentToSend);
+			content = contentToSend;
+			toastStore.trigger(postSavedLocallyToastSettings);
+		};
+
+		const body = JSON.stringify({ title: getTitle(), content: contentToSend, image: getImage() });
+		const headers = {
+			'Content-Type': 'application/json'
+		};
+
+		if (updating) {
 			fetch(`/api/posts/${id}`, {
 				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ title, content: contentToSend, image })
+				headers,
+				body
 			})
 				.then((res) => {
 					if (res.status !== 200) {
-						throw new Error();
+						onFailure();
 					}
 					return res.json();
 				})
-				.then((data) => {
-					content = contentToSend;
-					toastStore.trigger(postSavedToastSettings);
-					localStorage.removeItem(`post-${id}`);
+				.then(() => {
+					onSuccess();
 				})
-				.catch((err) => {
-					localStorage.setItem(`post-${id}`, contentToSend);
-					toastStore.trigger(postSavedLocallyToastSettings);
+				.catch(() => {
+					onFailure();
 				});
 		} else {
 			fetch('/api/posts', {
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ title, content: contentToSend, image })
+				headers,
+				body
 			})
 				.then((res) => {
 					if (res.status !== 201) {
-						throw new Error();
+						onFailure();
 					}
 					return res.json();
 				})
 				.then((data) => {
-					id = data.id;
-					content = contentToSend;
-					toastStore.trigger(postSavedToastSettings);
-					localStorage.removeItem('post');
+					onSuccess(data.id);
 				})
-				.catch((err) => {
-					localStorage.setItem('post', contentToSend);
-					toastStore.trigger(postSavedLocallyToastSettings);
+				.catch(() => {
+					onFailure();
 				});
 		}
 	};

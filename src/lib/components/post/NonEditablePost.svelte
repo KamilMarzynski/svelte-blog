@@ -5,4 +5,4 @@
 	export let id: string;
 </script>
 
-<Post {content} {id} />
+<Post {content} {id} editable={false} />
