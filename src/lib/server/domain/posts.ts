@@ -33,33 +33,43 @@ const postConverter = {
 
 export const posts: Repository<Post> = {
     save: async (data: Omit<PostData, 'createdAt' | 'updatedAt'>) => {
-        const id = getPostId();
-        const createdAt = Date.now();
-        const updatedAt = Date.now();
+        try {
+            const id = getPostId();
+            const createdAt = Date.now();
+            const updatedAt = Date.now();
 
-        const postData: Post['data'] = { ...data, createdAt, updatedAt };
-        const postRef = doc(db, 'posts', id).withConverter(postConverter);
-        const newPost: Post = { id, data: postData };
+            const postData: Post['data'] = { ...data, createdAt, updatedAt };
+            const postRef = doc(db, 'posts', id).withConverter(postConverter);
+            const newPost: Post = { id, data: postData };
 
-        await setDoc(postRef, newPost);
-        return newPost;
+            await setDoc(postRef, newPost);
+            return newPost;
+        // TODO: meaningful error handling
+        } catch (error) {
+            throw new Error()
+        }
     },
 
     update: async (id: PostId, data: Omit<PostData, 'createdAt' | 'updatedAt'>) => {
-        const postRef = doc(db, 'posts', id).withConverter(postConverter);
-        const postSnap = await getDoc(postRef);
+        try {
+            const postRef = doc(db, 'posts', id).withConverter(postConverter);
+            const postSnap = await getDoc(postRef);
 
-        if (!postSnap.exists()) {
-            throw new Error(`Post ${id} does not exist`);
+            if (!postSnap.exists()) {
+                throw new Error(`Post ${id} does not exist`);
+            }
+            const existingData = postSnap.data().data;
+
+            const updatedAt = Date.now();
+            const updatedData: Post['data'] = { ...existingData, ...data, updatedAt };
+            const updatedPost: Post = { id, data: updatedData };
+
+            await setDoc(postRef, updatedPost);
+            return updatedPost;
+        // TODO: meaningful error handling
+        } catch {
+            throw new Error()
         }
-        const existingData = postSnap.data().data;
-
-        const updatedAt = Date.now();
-        const updatedData: Post['data'] = { ...existingData, ...data, updatedAt };
-        const updatedPost: Post = { id, data: updatedData };
-
-        await setDoc(postRef, updatedPost);
-        return updatedPost;
     },
 
     get: async (id: PostId) => {

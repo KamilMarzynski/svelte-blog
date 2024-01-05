@@ -11,8 +11,9 @@
 	import { getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 
 	export let editable: boolean = true;
-	export let content: string = 'Add title';
 	export let id = '';
+	export let content: string =
+		localStorage.getItem(`post-${id}`) || localStorage.getItem('post') || 'Add title';
 
 	let editing: boolean = id === '' && editable ? false : true;
 
@@ -21,20 +22,27 @@
 
 	let saveTimeout: any;
 
-	const t: ToastSettings = {
+	const postSavedToastSettings: ToastSettings = {
 		message: 'Your post has been saved',
 		timeout: 2000
 	};
+
+	const postSavedLocallyToastSettings: ToastSettings = {
+		message: 'Your post has been saved locally',
+		timeout: 2000
+	};
+
 	const toastStore = getToastStore();
 
 	const handleSendPost = () => {
-		const currentContent = editor.getHTML();
-
-		if (currentContent.length < 30 || currentContent === content) {
+		const contentToSend = editor.getHTML();
+		const hasContentChanged = contentToSend !== content;
+		if (contentToSend.length < 30 || !hasContentChanged) {
 			return;
 		}
 
 		editing = id === '' && editable ? false : true;
+
 		const getTitle = () => {
 			const headings = editor.getHTML().match(/<h1[^>]*>([^<]+)<\/h1>/i);
 			const title = headings ? headings[1] : '';
@@ -56,29 +64,47 @@
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ title, content: currentContent, image })
+				body: JSON.stringify({ title, content: contentToSend, image })
 			})
-				.then((res) => res.json())
-				.then((data) => {
-					content = currentContent;
-					toastStore.trigger(t);
+				.then((res) => {
+					if (res.status !== 200) {
+						throw new Error();
+					}
+					return res.json();
 				})
-				.catch((err) => console.log(err));
+				.then((data) => {
+					content = contentToSend;
+					toastStore.trigger(postSavedToastSettings);
+					localStorage.removeItem(`post-${id}`);
+				})
+				.catch((err) => {
+					localStorage.setItem(`post-${id}`, contentToSend);
+					toastStore.trigger(postSavedLocallyToastSettings);
+				});
 		} else {
 			fetch('/api/posts', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ title, content: currentContent, image })
+				body: JSON.stringify({ title, content: contentToSend, image })
 			})
-				.then((res) => res.json())
+				.then((res) => {
+					if (res.status !== 201) {
+						throw new Error();
+					}
+					return res.json();
+				})
 				.then((data) => {
 					id = data.id;
-					content = currentContent;
-					toastStore.trigger(t);
+					content = contentToSend;
+					toastStore.trigger(postSavedToastSettings);
+					localStorage.removeItem('post');
 				})
-				.catch((err) => console.log(err));
+				.catch((err) => {
+					localStorage.setItem('post', contentToSend);
+					toastStore.trigger(postSavedLocallyToastSettings);
+				});
 		}
 	};
 
