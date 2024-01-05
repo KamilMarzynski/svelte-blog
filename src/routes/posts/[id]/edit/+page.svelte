@@ -1,6 +1,5 @@
 <script lang="ts">
-	import EditorTheme from '$lib/components/EditorTheme.svelte';
-	import Post from '$lib/components/Post.svelte';
+	import { EditablePost } from '$lib/components/post';
 	import ProtectedRoute from '$lib/components/ProtectedRoute.svelte';
 
 	export let data: {
@@ -15,7 +14,5 @@
 </script>
 
 <ProtectedRoute roles={['admin']}>
-	<EditorTheme>
-		<Post content={data.post.data.content} id={data.post.id} />
-	</EditorTheme>
+	<EditablePost content={data.post.data.content} id={data.post.id} />
 </ProtectedRoute>

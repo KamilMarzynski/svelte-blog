@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Post from '$lib/components/Post.svelte';
+	import { NonEditablePost } from '$lib/components/post';
 	import { authStore, type UserData } from '$lib/store/authStore';
 
 	let user: UserData;
@@ -24,7 +24,7 @@
 	};
 </script>
 
-<Post content={data.post.data.content} editable={false} id={data.post.id} />
+<NonEditablePost content={data.post.data.content} id={data.post.id} />
 
 {#if user && user.role === 'admin'}
 	<a href="/posts/{data.post.id}/edit">Edit</a>
