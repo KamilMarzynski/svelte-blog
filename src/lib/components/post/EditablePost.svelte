@@ -1,5 +1,5 @@
 <script lang="ts">
-	import EditorTheme from '$lib/components/EditorTheme.svelte';
+	import EditorTheme from '$lib/components/post/EditorTheme.svelte';
 	import Post from '$lib/components/post/Post.svelte';
 
 	export let content: string | undefined = undefined;

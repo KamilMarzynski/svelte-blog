@@ -81,11 +81,12 @@
 				.then((res) => {
 					if (res.status !== 200) {
 						onFailure();
+						return null;
 					}
 					return res.json();
 				})
-				.then(() => {
-					onSuccess();
+				.then((data) => {
+					if (data) onSuccess();
 				})
 				.catch(() => {
 					onFailure();
@@ -98,14 +99,17 @@
 			})
 				.then((res) => {
 					if (res.status !== 201) {
+						console.log('res nie 201');
 						onFailure();
+						return null;
 					}
 					return res.json();
 				})
 				.then((data) => {
-					onSuccess(data.id);
+					if (data) onSuccess(data.id);
 				})
 				.catch(() => {
+					console.log('catch');
 					onFailure();
 				});
 		}
