@@ -3,7 +3,7 @@
 ## About
 
 This project it to track my humble progress in svelte app development.
-In terms of editor I have used some of the code from [nextling](https://github.com/sveltor/nextlint). Which is great package aiming to bring notion like editing to svelte. I needed just smart potion of it's capabilities not to complicate too much the flow and my page.
+In terms of editor I have used some of the code from [nextlint](https://github.com/sveltor/nextlint). Which is great package aiming to bring notion like editing to svelte. I needed just smart potion of it's capabilities not to complicate too much the flow and my page.
 
 ## Roadmap 
 ### Improvements
