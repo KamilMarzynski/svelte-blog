@@ -1,18 +1,32 @@
-# create-svelte
+# Svelte blog project
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+## About
 
-## Creating a project
+This project it to track my humble progress in svelte app development.
+In terms of editor I have used some of the code from [nextling](https://github.com/sveltor/nextlint). Which is great package aiming to bring notion like editing to svelte. I needed just smart potion of it's capabilities not to complicate too much the flow and my page.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Roadmap 
+### Improvements
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+- [ ] (UX) Improve local storage blog post saving when internet connection is weak
+- [ ] (UX) Better post edit button
+- [ ] (UX) Further work on making editor even more user friendly
+- [ ] (technical) Add proper api error handling
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+### Features
+- [ ] User profile page
+- [ ] Post drafts on profile page and post publishing
+- [ ] Password reset
+- [ ] Post deleting
+- [ ] Post discussion (comments) functionality
+- [ ] AI text review before publishing post
+- [ ] Posts' categories
+
+### Future
+- Add option for user to become author and have own blog page
+- Rework dashboard to show most popular author/blogs etc.
+- Rework routing so that posts are always nested in authors routes
+
 
 ## Developing
 
@@ -32,7 +46,3 @@ To create a production version of your app:
 ```bash
 npm run build
 ```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
