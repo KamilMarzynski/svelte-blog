@@ -46,3 +46,10 @@ To create a production version of your app:
 ```bash
 npm run build
 ```
+
+## Firebase
+
+For this app to work, first create account on firebase and create new project. 
+You can find all required information [here](https://firebase.google.com/) and [here](https://firebase.google.com/docs/web/setup?continue=https%3A%2F%2Ffirebase.google.com%2Flearn%2Fpathways%2Ffirebase-web%23article-https%3A%2F%2Ffirebase.google.com%2Fdocs%2Fweb%2Fsetup)
+After getting firebase config. Copy .evn.example and rename it to .env. Next fill it with your config.
+You need to add to your firebase project firestore, authentication and storage. After doing so, you are good to go.
